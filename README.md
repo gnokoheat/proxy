@@ -1,6 +1,6 @@
 # kahlys/proxy
 
-[![godoc](https://godoc.org/github.com/kahlys/proxy?status.svg)](https://godoc.org/github.com/kahlys/proxy) 
+[![godoc](https://godoc.org/github.com/kahlys/proxy?status.svg)](https://godoc.org/github.com/kahlys/proxy)
 [![build](https://api.travis-ci.org/kahlys/proxy.svg?branch=master)](https://travis-ci.org/kahlys/proxy)
 [![go report](https://goreportcard.com/badge/github.com/kahlys/proxy)](https://goreportcard.com/report/github.com/kahlys/proxy)
 
@@ -22,7 +22,7 @@ $ go install cmd/tcpproxy/*.go
 
 The example executable provides both TCP and TCP/TLS connection: `cmd/tcpproxy/main.go`
 
-By default, the proxy address is *localhost:4444* and the target address is *localhost:80*.
+By default, the proxy address is _localhost:4444_ and the target address is _localhost:80_.
 
 ```sh
 $ tcpproxy
@@ -50,4 +50,28 @@ Usage of tcpproxy:
         key x509 file for proxy client side
   -rtls
         tls/ssl between proxy and target, you must set 'rcert' and 'rkey'
+```
+
+## Proxy logging
+
+Output log
+
+```
+=============================== New Seq ===============================
+HTTP/1.1 200 OK
+Server: Proxy
+Content-Encoding: gzip
+Content-Type: application/json; charset=UTF-8
+Date: Sun, 30 Jan 2022 10:42:34 GMT
+Content-Length: 64
+...
+```
+
+Log file
+
+```
+1643539215370834000.txt
+1643539277472175000.txt
+1643539282064055000.txt
+...
 ```

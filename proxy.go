@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"log"
 	"net"
+	"os"
 )
 
 // Server is a TCP server that takes an incoming request and sends it to another
@@ -27,6 +28,9 @@ type Server struct {
 	// TLS configuration for the proxy if needed to connect to the target server with TLS protocol.
 	// If nil, TCP protocol is used.
 	TLSConfigTarget *tls.Config
+
+	// Proxy log file
+	File *os.File
 }
 
 // ListenAndServe listens on the TCP network address laddr and then handle packets
@@ -92,6 +96,7 @@ func (s *Server) handleConn(conn net.Conn) {
 		}()
 
 		buff := make([]byte, 65535)
+		seq_log := "\n=============================== New Seq ===============================\n"
 		for {
 			n, err := src.Read(buff)
 			if err != nil {
@@ -105,6 +110,15 @@ func (s *Server) handleConn(conn net.Conn) {
 			}
 
 			_, err = dst.Write(b)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+
+			log.Println(seq_log + string(b))
+			copy(b[:], seq_log)
+
+			_, err = s.File.Write(b)
 			if err != nil {
 				log.Println(err)
 				return

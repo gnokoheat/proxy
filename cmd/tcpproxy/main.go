@@ -4,6 +4,9 @@ import (
 	"crypto/tls"
 	"flag"
 	"log"
+	"os"
+	"strconv"
+	"time"
 
 	"github.com/kahlys/proxy"
 )
@@ -27,9 +30,18 @@ var (
 func main() {
 	flag.Parse()
 
+	timestamp := strconv.FormatInt(time.Now().UTC().UnixNano(), 10)
+	file, err := os.Create(timestamp + ".txt")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer file.Close()
+
 	p := proxy.Server{
 		Addr:   *localAddr,
 		Target: *targetAddr,
+		File:   file,
 	}
 
 	if *targetTLS {
